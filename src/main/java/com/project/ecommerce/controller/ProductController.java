@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/products")
 public class ProductController {
@@ -20,14 +22,12 @@ public class ProductController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<String> addProduct(@RequestBody ProductEntity productEntity) {
-        if (productService.addProduct(productEntity)) {
-            return new ResponseEntity<String>("Product added successfully", HttpStatus.CREATED);
-        }
-        return new ResponseEntity<String>("Product adding failed please try again", HttpStatus.INTERNAL_SERVER_ERROR);
+        productService.addProduct(productEntity);
+        return new ResponseEntity<String>("Product added successfully", HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String getAllProducts() {
+    public List<ProductEntity> getAllProducts() {
         return productService.getAllProducts();
     }
 
@@ -37,13 +37,17 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{productId}", method = RequestMethod.PUT)
-    public String updateProductById() {
-        return productService.updateProductById();
+    public ResponseEntity<String> updateProductById(@PathVariable("productId") Long id, @RequestBody ProductEntity productEntity) {
+        productService.updateProductById(id, productEntity);
+        return new ResponseEntity<>("Success", HttpStatus.OK);
+
     }
 
     @RequestMapping(value = "/{productId}", method = RequestMethod.DELETE)
-    public String removeProductById() {
-        return productService.removeProductById();
+    public ResponseEntity<String> removeProductById(@PathVariable("productId") Long id) {
+        productService.removeProductById(id);
+        return new ResponseEntity<>("Success", HttpStatus.OK);
+
     }
 
 }
