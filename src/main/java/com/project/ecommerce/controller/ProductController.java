@@ -5,10 +5,7 @@ import com.project.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -35,8 +32,8 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{productId}", method = RequestMethod.GET)
-    public String getProductById() {
-        return productService.getProductById();
+    public ProductEntity getProductById(@PathVariable("productId") Long id) {
+        return productService.getProductById(id);
     }
 
     @RequestMapping(value = "/{productId}", method = RequestMethod.PUT)

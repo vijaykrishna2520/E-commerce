@@ -1,11 +1,14 @@
 package com.project.ecommerce.service;
 
 import com.project.ecommerce.entity.ProductEntity;
+import com.project.ecommerce.exception.ResourceNotFoundException;
 import com.project.ecommerce.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -28,8 +31,12 @@ public class ProductService {
         return "All products fetched successfully";
     }
 
-    public String getProductById() {
-        return "product with id fetched successfully";
+    public ProductEntity getProductById(Long id) {
+        Optional<ProductEntity> productEntity = productRepository.findById(id);
+        if (!productEntity.isPresent()) {
+            throw new ResourceNotFoundException("Resource with " + id + " Not Found");
+        }
+        return productEntity.get();
     }
 
     public String updateProductById() {
