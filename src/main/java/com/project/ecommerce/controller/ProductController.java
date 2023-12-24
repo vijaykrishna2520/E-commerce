@@ -2,6 +2,8 @@ package com.project.ecommerce.controller;
 
 import com.project.ecommerce.entity.ProductEntity;
 import com.project.ecommerce.service.ProductService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,35 @@ public class ProductController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Successful"),
+                    @ApiResponse(responseCode = "400", description = "Bad request please check the request fields are correct", content = @io.swagger.v3.oas.annotations.media.Content(
+//                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(
+                                    example = "Bad Request for the Api"
+                            )
+                    )),
+                    @ApiResponse(responseCode = "500", description = "Internal server error, Something went wrong", content = @io.swagger.v3.oas.annotations.media.Content(
+//                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(
+                                    example = "Internal server error"
+                            )
+                    )),
+                    @ApiResponse(responseCode = "403", description = "Resource Forbidden", content = @io.swagger.v3.oas.annotations.media.Content(
+//                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(
+                                    example = "You are not authorized to access this Api"
+                            )
+                    )),
+                    @ApiResponse(responseCode = "404", description = "Resource not found", content = @io.swagger.v3.oas.annotations.media.Content(
+//                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(
+                                    example = "Products not found"
+                            )
+                    ))
+            }
+    )
     public List<ProductEntity> getAllProducts() {
         return productService.getAllProducts();
     }
