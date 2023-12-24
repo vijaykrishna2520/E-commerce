@@ -13,22 +13,23 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @ToString
-@Table(name = "product")
+@Table(name = "category")
 @Entity
-public class ProductEntity {
+public class CategoryEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
-    private Long productId;
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "category_id")
+    private Long categoryId;
     @Column(name = "name")
     private String name;
     @Column(name = "description")
     private String description;
-    @Column(name = "price")
-    private Integer price;
-    @Column(name = "stock_quantity")
-    private Integer quantity;
     @JsonIgnore
-    @ManyToMany(mappedBy = "productEntities")
-    private List<CategoryEntity> categoryEntities;
+    @ManyToMany
+    @JoinTable(
+            name = "product_category",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<ProductEntity> productEntities;
 }

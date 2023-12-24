@@ -17,10 +17,10 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public Boolean addProduct(ProductEntity productEntity) {
+    public Long addProduct(ProductEntity productEntity) {
         try {
             ProductEntity productEntitySaved = productRepository.save(productEntity);
-            return true;
+            return productEntitySaved.getProductId();
         } catch (Exception e) {
             throw new InternalServerErrorException("Internal server error");
         }
@@ -37,7 +37,7 @@ public class ProductService {
     public ProductEntity getProductById(Long productId) {
         Optional<ProductEntity> productEntity = productRepository.findById(productId);
         if (!productEntity.isPresent()) {
-            throw new ResourceNotFoundException("Resource with " + productId + " Not Found");
+            throw new ResourceNotFoundException("Product with " + productId + " Not Found");
         }
         return productEntity.get();
     }

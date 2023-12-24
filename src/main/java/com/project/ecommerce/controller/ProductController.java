@@ -5,10 +5,13 @@ import com.project.ecommerce.service.ProductService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -24,8 +27,15 @@ public class ProductController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<String> addProduct(@RequestBody ProductEntity productEntity) {
-        productService.addProduct(productEntity);
-        return new ResponseEntity<String>("Product added successfully", HttpStatus.CREATED);
+        Long productIdSaved = productService.addProduct(productEntity);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{productId}")
+                .buildAndExpand(productIdSaved)
+                .toUri();
+        httpHeaders.setLocation(location);
+        return new ResponseEntity<String>("Product added successfully", httpHeaders,HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
