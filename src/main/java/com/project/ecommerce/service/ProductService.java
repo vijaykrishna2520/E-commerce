@@ -34,17 +34,17 @@ public class ProductService {
         }
     }
 
-    public ProductEntity getProductById(Long id) {
-        Optional<ProductEntity> productEntity = productRepository.findById(id);
+    public ProductEntity getProductById(Long productId) {
+        Optional<ProductEntity> productEntity = productRepository.findById(productId);
         if (!productEntity.isPresent()) {
-            throw new ResourceNotFoundException("Resource with " + id + " Not Found");
+            throw new ResourceNotFoundException("Resource with " + productId + " Not Found");
         }
         return productEntity.get();
     }
 
-    public Boolean updateProductById(Long id, ProductEntity productEntityNew) {
-        ProductEntity productEntityOld = getProductById(id);
-        productEntityNew.setId(productEntityOld.getId());
+    public Boolean updateProductById(Long productId, ProductEntity productEntityNew) {
+        ProductEntity productEntityOld = getProductById(productId);
+        productEntityNew.setProductId(productEntityOld.getProductId());
         try {
             productRepository.save(productEntityNew);
             return true;
@@ -53,8 +53,8 @@ public class ProductService {
         }
     }
 
-    public Boolean removeProductById(Long id) {
-        ProductEntity productEntity = getProductById(id);
+    public Boolean removeProductById(Long productId) {
+        ProductEntity productEntity = getProductById(productId);
         try {
             productRepository.delete(productEntity);
             return true;

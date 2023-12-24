@@ -63,20 +63,20 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{productId}", method = RequestMethod.GET)
-    public ProductEntity getProductById(@PathVariable("productId") Long id) {
-        return productService.getProductById(id);
+    public ProductEntity getProductById(@PathVariable("productId") Long productId) {
+        return productService.getProductById(productId);
     }
 
     @RequestMapping(value = "/{productId}", method = RequestMethod.PUT)
-    public ResponseEntity<String> updateProductById(@PathVariable("productId") Long id, @RequestBody ProductEntity productEntity) {
-        productService.updateProductById(id, productEntity);
+    public ResponseEntity<String> updateProductById(@PathVariable("productId") Long productId, @RequestBody ProductEntity productEntity) {
+        productService.updateProductById(productId, productEntity);
         return new ResponseEntity<>("Success", HttpStatus.OK);
 
     }
 
     @RequestMapping(value = "/{productId}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> removeProductById(@PathVariable("productId") Long id) {
-        productService.removeProductById(id);
+    public ResponseEntity<String> removeProductById(@PathVariable("productId") Long productId) {
+        productService.removeProductById(productId);
         return new ResponseEntity<>("Success", HttpStatus.OK);
 
     }
