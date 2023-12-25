@@ -17,6 +17,11 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    public ProductEntity getProductByProductId(Long productId) {
+        Optional<ProductEntity> productEntity = productRepository.findById(productId);
+        return productEntity.orElse(null);
+    }
+
     public Long addProduct(ProductEntity productEntity) {
         try {
             ProductEntity productEntitySaved = productRepository.save(productEntity);
@@ -35,11 +40,11 @@ public class ProductService {
     }
 
     public ProductEntity getProductById(Long productId) {
-        Optional<ProductEntity> productEntity = productRepository.findById(productId);
-        if (!productEntity.isPresent()) {
-            throw new ResourceNotFoundException("Product with " + productId + " Not Found");
+        ProductEntity productEntity = getProductByProductId(productId);
+        if (productEntity != null) {
+            return productEntity;
         }
-        return productEntity.get();
+        throw new ResourceNotFoundException("Product with " + productId + " Not Found");
     }
 
     public Boolean updateProductById(Long productId, ProductEntity productEntityNew) {

@@ -14,6 +14,12 @@ import java.util.Optional;
 public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
+    
+    public CategoryEntity getCategoryByCategoryId(Long categoryId) {
+        Optional<CategoryEntity> categoryEntity = categoryRepository.findById(categoryId);
+        return categoryEntity.orElse(null);
+    }
+
 
     public Long addCategory(CategoryEntity categoryEntity) {
         try {
