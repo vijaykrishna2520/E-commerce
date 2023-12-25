@@ -17,10 +17,15 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public Boolean addProduct(ProductEntity productEntity) {
+    public ProductEntity getProductByProductId(Long productId) {
+        Optional<ProductEntity> productEntity = productRepository.findById(productId);
+        return productEntity.orElse(null);
+    }
+
+    public Long addProduct(ProductEntity productEntity) {
         try {
             ProductEntity productEntitySaved = productRepository.save(productEntity);
-            return true;
+            return productEntitySaved.getProductId();
         } catch (Exception e) {
             throw new InternalServerErrorException("Internal server error");
         }
@@ -34,17 +39,17 @@ public class ProductService {
         }
     }
 
-    public ProductEntity getProductById(Long id) {
-        Optional<ProductEntity> productEntity = productRepository.findById(id);
-        if (!productEntity.isPresent()) {
-            throw new ResourceNotFoundException("Resource with " + id + " Not Found");
+    public ProductEntity getProductById(Long productId) {
+        ProductEntity productEntity = getProductByProductId(productId);
+        if (productEntity != null) {
+            return productEntity;
         }
-        return productEntity.get();
+        throw new ResourceNotFoundException("Product with " + productId + " Not Found");
     }
 
-    public Boolean updateProductById(Long id, ProductEntity productEntityNew) {
-        ProductEntity productEntityOld = getProductById(id);
-        productEntityNew.setId(productEntityOld.getId());
+    public Boolean updateProductById(Long productId, ProductEntity productEntityNew) {
+        ProductEntity productEntityOld = getProductById(productId);
+        productEntityNew.setProductId(productEntityOld.getProductId());
         try {
             productRepository.save(productEntityNew);
             return true;
@@ -53,8 +58,8 @@ public class ProductService {
         }
     }
 
-    public Boolean removeProductById(Long id) {
-        ProductEntity productEntity = getProductById(id);
+    public Boolean removeProductById(Long productId) {
+        ProductEntity productEntity = getProductById(productId);
         try {
             productRepository.delete(productEntity);
             return true;
